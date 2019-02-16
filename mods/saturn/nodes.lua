@@ -111,7 +111,7 @@ register_node_with_stats("saturn:pitchblende", {
 	tiles = "saturn_pitchblende.png",
 	groups = {cracky = 1},
 	legacy_mineral = true,
-	weight = 8000,
+	weight = 96000,
 	volume = 1,
 	price = 1000,
 	noise_offset = -1.2,

@@ -1,0 +1,24 @@
+This file contains various notes about the game and its world. Eventually
+this will be transformed into a story or even an in-game readable
+encyclopedia. For now these notes remain to storywise explain some of the
+design decicions made.
+
+- The area where this game occurs has some strange force field influence in
+  it. As a result the gold is twice as heavy as on Earth and uranium and lead
+  (the main components of pitchblende) are 4 times as heavy as on Earth. Gold
+  is actually a mixture of about 50% gold and 50% water ice so its weight
+  appears to be the same as on Earth but it is not.
+  This means that a block of pitchblende weights almost 100 tons when loaded
+  onboard and thus only a handful of them can be hauled reasonably (unless
+  somebody finds a way to construct a drive that has about 100 times of the
+  traction than the gravity drive currently in-game).
+- This strange force field influence is actually responsible for two more
+  things:
+  - Maintenance-free uranium based reactors (have you seen one crammed into
+    100m3, containment building and all?)
+  - The ability to have a ship there that is roughly 3x3x3 meters in
+    dimensions yet can cram 4000m3 of stuff into its cargo space. Yet its
+    movement is affected by the stuff it contains as if it was much bigger.
+  The second thing in this list suggests that the force field has something
+  to do with ability to access and utilize more than the usual 3 dimensions
+  to make it possible to build huge containers in compact space.
