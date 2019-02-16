@@ -90,7 +90,7 @@ saturn.localisation_and_units = {
 	traction = {name = "Traction", format_numeric = "%d", units = "N"},
 	range = {name = "Range of interaction with outer space", format_numeric = "%4.0f", units = "m"},
 	action_range = {name = "Range of action", format_numeric = "%4.0f", units = "m"},
-	noise_offset = {name = "Rarity (-1.0 - common, -2.0 - very rare)", format_numeric = "%4.1f", units = ""},
+	noise_offset = {name = "Rarity (-0.5 - common, -1.5 - very rare)", format_numeric = "%4.1f", units = ""},
 	destructible_by_weapons = {name = "Fragile (destructible by bullets)"},
 	single_per_player = {name = "Only single one can be mounted per player"},
 	cycle_time = {name = "Cycle time", format_numeric = "%4.0f", units = "s"},
