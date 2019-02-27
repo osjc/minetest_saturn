@@ -110,8 +110,42 @@ local function create_display(name, shape)
 	})
 end
 
+local function create_display_set(shape, deltas)
+  local display_vectors = {}
+  for number,delta in ipairs(deltas) do
+    local base_vector = {
+      x = 8,
+      y = 8,
+      z = 8,
+    }
+    local display_vector = {
+      x = delta[1],
+      y = delta[2],
+      z = delta[3],
+    }
+    local cancel_vector = {
+      x = -display_vector.x,
+      y = -display_vector.y,
+      z = -display_vector.z,
+    }
+    table.insert(display_vectors, cancel_vector)
+    local newshape = {}
+    local delta_vector = vector.add(base_vector, display_vector)
+    for _,piece in ipairs(shape) do
+      local top = {x=piece[1], y=piece[2], z=piece[3]}
+      local bottom = {x=piece[4], y=piece[5], z=piece[6]}
+      top = vector.add(top, delta_vector)
+      bottom = vector.add(bottom, delta_vector)
+      local newpiece = {top.x, top.y, top.z, bottom.x, bottom.y, bottom.z}
+      table.insert(newshape, newpiece)
+    end
+    create_display("display_"..number, newshape)
+  end
+  return display_vectors
+end
+
 local x = 8
-create_display("display", {
+display_vectors = create_display_set({
 	-- west side
 	{-(x+.498), -(x+.498), -(x+.498), -(x+.498), (x-.502), (x-.502)},
 	-- north side
@@ -124,6 +158,15 @@ create_display("display", {
 	{-(x+.498), (x-.502), -(x+.498), (x-.502), (x-.502), (x-.502)},
 	-- bottom
 	{-(x+.498), -(x+.498), -(x+.498), (x-.502), -(x+.498), (x-.502)},
+},{
+	{0,0,0},
+	{-15,0,0},
+	{0,-15,0},
+	{-15,-15,0},
+	{0,0,-15},
+	{-15,0,-15},
+	{0,-15,-15},
+	{-15,-15,-15},
 })
 
 register_node_with_stats("saturn:world_anchor_protector", {
@@ -152,7 +195,12 @@ register_node_with_stats("saturn:world_anchor_protector", {
 		if minetest.is_protected(pos, puncher:get_player_name()) then
 			return
 		end
-		minetest.add_entity(vector.add(pos_to_block_pos(pos),8), "saturn:display")
+		local basepos = pos_to_block_pos(pos)
+		for number, delta in ipairs(display_vectors) do
+			local position = vector.add(basepos,delta)
+			name = "saturn:display_"..number
+			minetest.add_entity(position, name)
+		end
 	end,
 	weight = 8000,
 	volume = 1,
