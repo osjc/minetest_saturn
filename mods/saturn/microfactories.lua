@@ -57,68 +57,74 @@ function minetest.is_protected(pos, name)
     return old_is_protected(pos, name)
 end
 
-minetest.register_entity("saturn:display", {
-	physical = false,
-	collisionbox = {0, 0, 0, 0, 0, 0},
-	visual = "wielditem",
-	-- wielditem seems to be scaled to 1.5 times original node size
-	visual_size = {x = 1.0 / 1.5, y = 1.0 / 1.5},
-	textures = {"saturn:display_node"},
-	timer = 0,
+local function create_display(name, shape)
+	local entityname = "saturn:"..name
+	local nodename = entityname.."_node"
 
-	on_activate = function(self, staticdata)
+	-- Display-zone node, Do NOT place the display as a node,
+	-- it is made to be used as an entity (see below)
+	minetest.register_node(nodename, {
+		tiles = {"saturn_cyan_frame.png"},
+		use_texture_alpha = true,
+		walkable = false,
+		drawtype = "nodebox",
+		node_box = {
+			type = "fixed",
+			fixed = shape,
+		},
+		selection_box = {
+			type = "regular",
+		},
+		paramtype = "light",
+		groups = {dig_immediate = 3, not_in_creative_inventory = 1},
+		drop = "",
+	})
 
-		-- Xanadu server only
-		if (mobs and mobs.entity and mobs.entity == false)
-		or not self then
-			self.object:remove()
-		end
-	end,
+	-- Display-zone entity. This is used to actually show the zone.
+	minetest.register_entity(entityname, {
+		physical = false,
+		collisionbox = {0, 0, 0, 0, 0, 0},
+		visual = "wielditem",
+		-- wielditem seems to be scaled to 1.5 times original node size
+		visual_size = {x = 1.0 / 1.5, y = 1.0 / 1.5},
+		textures = {nodename},
+		timer = 0,
 
-	on_step = function(self, dtime)
+		on_activate = function(self, staticdata)
 
-		self.timer = self.timer + dtime
+			-- Xanadu server only
+			if (mobs and mobs.entity and mobs.entity == false)
+			or not self then
+				self.object:remove()
+			end
+		end,
 
-		if self.timer > 5 then
-			self.object:remove()
-		end
-	end,
-})
+		on_step = function(self, dtime)
 
--- Display-zone node, Do NOT place the display as a node,
--- it is made to be used as an entity (see above)
+			self.timer = self.timer + dtime
+
+			if self.timer > 5 then
+				self.object:remove()
+			end
+		end,
+	})
+end
 
 local x = 8
-minetest.register_node("saturn:display_node", {
-	tiles = {"saturn_cyan_frame.png"},
-	use_texture_alpha = true,
-	walkable = false,
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			-- west side
-			{-(x+.498), -(x+.498), -(x+.498), -(x+.498), (x-.502), (x-.502)},
-			-- north side
-			{-(x+.498), -(x+.498), (x-.502), (x-.502), (x-.502), (x-.502)},
-			-- east side
-			{(x-.502), -(x+.498), -(x+.498), (x-.502), (x-.502), (x-.502)},
-			-- south side
-			{-(x+.498), -(x+.498), -(x+.498), (x-.502), (x-.502), -(x+.498)},
-			-- top
-			{-(x+.498), (x-.502), -(x+.498), (x-.502), (x-.502), (x-.502)},
-			-- bottom
-			{-(x+.498), -(x+.498), -(x+.498), (x-.502), -(x+.498), (x-.502)},
-		},
-	},
-	selection_box = {
-		type = "regular",
-	},
-	paramtype = "light",
-	groups = {dig_immediate = 3, not_in_creative_inventory = 1},
-	drop = "",
+create_display("display", {
+	-- west side
+	{-(x+.498), -(x+.498), -(x+.498), -(x+.498), (x-.502), (x-.502)},
+	-- north side
+	{-(x+.498), -(x+.498), (x-.502), (x-.502), (x-.502), (x-.502)},
+	-- east side
+	{(x-.502), -(x+.498), -(x+.498), (x-.502), (x-.502), (x-.502)},
+	-- south side
+	{-(x+.498), -(x+.498), -(x+.498), (x-.502), (x-.502), -(x+.498)},
+	-- top
+	{-(x+.498), (x-.502), -(x+.498), (x-.502), (x-.502), (x-.502)},
+	-- bottom
+	{-(x+.498), -(x+.498), -(x+.498), (x-.502), -(x+.498), (x-.502)},
 })
-
 
 register_node_with_stats("saturn:world_anchor_protector", {
 	description = "World anchor and map block protector",
