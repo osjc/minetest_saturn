@@ -64,7 +64,7 @@ local function create_display(name, shape)
 	-- Display-zone node, Do NOT place the display as a node,
 	-- it is made to be used as an entity (see below)
 	minetest.register_node(nodename, {
-		tiles = {"saturn_cyan_frame.png"},
+		tiles = {"saturn_area_frame.png"},
 		use_texture_alpha = true,
 		walkable = false,
 		drawtype = "nodebox",
